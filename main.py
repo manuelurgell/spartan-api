@@ -95,6 +95,8 @@ async def user_list():
           response_model=RetrieveUser,
           response_model_exclude_none=True)
 async def user_create(user: CreateUser):
+    if not user.phone.isnumeric():
+        raise HTTPException(status_code=400, detail="Invalid phone number")
     query = users.insert().values(**user.dict())
     try:
         obj_id = await database.execute(query)
@@ -124,6 +126,9 @@ async def user_retrieve(user_id: int):
            response_model=RetrieveUpdatedUser,
            response_model_exclude_none=True)
 async def user_update(user_id: int, user: UpdateUser):
+    if user.phone and not user.phone.isnumeric():
+        raise HTTPException(status_code=400, detail="Invalid phone number")
+
     query = users.update().values(
         **user.dict(exclude_unset=True)
     ).where(users.c.id == user_id)

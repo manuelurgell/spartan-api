@@ -37,7 +37,7 @@ class RetrieveUserAssociation(BaseModel):
     name: str
     last_name: str
     birthdate: datetime.date
-    phone: Optional[int]
+    phone: Optional[str]
     teams: List[TeamAssociation]
 
 
@@ -47,7 +47,7 @@ class UserAssociation(BaseModel):
     name: str
     last_name: str
     birthdate: datetime.date
-    phone: Optional[int]
+    phone: Optional[str]
 
 
 class RetrieveTeamAssociation(BaseModel):
