@@ -8,8 +8,16 @@ from app import app
 
 from db import database
 
-from models import teams, users
+from models import associations, teams, users
 
+from schemas.association import (
+    BaseAssociation,
+    CreateAssociation,
+    RetrieveTeamAssociation,
+    RetrieveUpdatedAssociation,
+    RetrieveUserAssociation,
+    UpdateAssociation
+)
 from schemas.team import (
     BaseTeam,
     CreateTeam,
@@ -129,3 +137,103 @@ async def user_delete(user_id: int):
     query = users.delete().where(users.c.id == user_id)
     await database.execute(query)
     return {"deleted": user_id}
+
+
+# Association CRUD
+@app.get("/associations/", response_model=List[BaseAssociation])
+async def association_list():
+    query = associations.select()
+    return await database.fetch_all(query)
+
+
+@app.post("/associations/", response_model=BaseAssociation)
+async def association_create(association: CreateAssociation):
+    query = associations.insert().values(**association.dict())
+    try:
+        obj_id = await database.execute(query)
+    except UniqueViolationError:
+        raise HTTPException(
+            status_code=400, detail="Relation already exists"
+        )
+    except ForeignKeyViolationError:
+        raise HTTPException(
+            status_code=400, detail="model_id is not associated with a model"
+        )
+    return {**association.dict(), "id": obj_id}
+
+
+@app.get("/associations/{association_id}", response_model=BaseAssociation)
+async def association_retrieve(association_id: int):
+    query = associations.select().where(associations.c.id == association_id)
+    record = await database.fetch_one(query)
+    if record is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return record
+
+
+@app.get("/associations/by-user/{user_id}",
+         response_model=RetrieveUserAssociation,
+         response_model_exclude_none=True)
+async def association_retrieve_by_user(user_id: int):
+    query = users.select().where(users.c.id == user_id)
+    user = await database.fetch_one(query)
+    if user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    user = {k: v for k, v in user.items()}
+
+    query = teams.select().where(associations.c.user_id == user_id).join(
+        associations, associations.c.team_id == teams.c.id
+    )
+    team_list = await database.fetch_all(query)
+    team_list = [{
+        "id": team.get("id"),
+        "name": team.get("name")
+    } for team in team_list]
+
+    return {**user, "teams": team_list}
+
+
+@app.get("/associations/by-team/{team_id}",
+         response_model=RetrieveTeamAssociation,
+         response_model_exclude_none=True)
+async def association_retrieve_by_team(team_id: int):
+    query = teams.select().where(teams.c.id == team_id)
+    team = await database.fetch_one(query)
+    if team is None:
+        raise HTTPException(status_code=404, detail="Team not found")
+    team = {k: v for k, v in team.items()}
+
+    query = users.select().where(associations.c.team_id == team_id).join(
+        associations, associations.c.user_id == users.c.id
+    )
+    user_list = await database.fetch_all(query)
+    user_list = [{
+        "id": user.get("id"),
+        "email": user.get("email"),
+        "name": user.get("name"),
+        "last_name": user.get("last_name"),
+        "birthdate": user.get("birthdate"),
+        "phone": user.get("phone")
+    } for user in user_list]
+
+    return {**team, "users": user_list}
+
+
+@app.patch("/associations/{association_id}",
+           response_model=RetrieveUpdatedAssociation,
+           response_model_exclude_none=True)
+async def association_update(association_id: int,
+                             association: UpdateAssociation):
+    query = associations.update().values(
+        **association.dict(exclude_unset=True)
+    ).where(associations.c.id == association_id)
+
+    await database.execute(query)
+    return {**association.dict(), "id": association_id}
+
+
+@app.delete("/associations/{association_id}")
+async def association_delete(association_id: int):
+    query = associations.delete().where(associations.c.id == association_id)
+    await database.execute(query)
+    return {"deleted": association_id}

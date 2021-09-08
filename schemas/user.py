@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 class BaseUser(BaseModel):
     id: int
-    team_id: int
     email: str
     name: str
     last_name: str
@@ -18,7 +17,6 @@ class BaseUser(BaseModel):
 
 
 class CreateUser(BaseModel):
-    team_id: int
     email: str
     # password: str
     name: str
@@ -29,7 +27,6 @@ class CreateUser(BaseModel):
 
 class RetrieveUser(BaseModel):
     id: int
-    team_id: int
     email: str
     name: str
     last_name: str
@@ -38,7 +35,6 @@ class RetrieveUser(BaseModel):
 
 
 class UpdateUser(BaseModel):
-    team_id: Optional[int]
     name: Optional[str]
     last_name: Optional[str]
     birthdate: Optional[datetime.date]
@@ -47,7 +43,6 @@ class UpdateUser(BaseModel):
 
 class RetrieveUpdatedUser(BaseModel):
     id: int
-    team_id: Optional[int]
     name: Optional[str]
     last_name: Optional[str]
     birthdate: Optional[datetime.date]

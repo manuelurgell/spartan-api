@@ -8,8 +8,18 @@ from sqlalchemy import (
     Table
 )
 from sqlalchemy.sql import func
+from sqlalchemy.sql.schema import UniqueConstraint
 
 from db import metadata
+
+associations = Table(
+    'association',
+    metadata,
+    Column("id", Integer, primary_key=True, index=True),
+    Column('team_id', ForeignKey('team.id'), nullable=False),
+    Column('user_id', ForeignKey('user.id'), nullable=False),
+    UniqueConstraint('team_id', 'user_id')
+)
 
 teams = Table(
     'team',
@@ -24,9 +34,6 @@ users = Table(
     'user',
     metadata,
     Column("id", Integer, primary_key=True, index=True),
-    Column("team_id", Integer, ForeignKey(
-        "team.id", ondelete='CASCADE'
-    ), nullable=False),
     Column("email", String(250), nullable=False, unique=True),
     # password
     Column("name", String(250), nullable=False),
