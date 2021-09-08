@@ -17,7 +17,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
 #### Environment
 - Create .env file wit the following contents (default values are given, feel free to change them):
   ```
-  POSTGRES_DB=spartan_api
+  POSTGRES_DB=spartan_db
   POSTGRES_USER=postgres
   POSTGRES_PASSWORD=postgres
   POSTGRES_HOST=database
@@ -51,7 +51,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
 #### Environment
 - Create .env file wit the following contents (default values are given, feel free to change them):
   ```
-  POSTGRES_DB=spartan_api
+  POSTGRES_DB=spartan_db
   POSTGRES_USER=postgres
   POSTGRES_PASSWORD=postgres
   POSTGRES_HOST=database
@@ -114,7 +114,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   ```
 - If you have a postgresql database running in your machine, simply change the according variables in the .env file, for example:
   ```
-  POSTGRES_DB=spartan_db
+  POSTGRES_DB=my_local_database
   ...
   POSTGRES_HOST=localhost
   ```

@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:5432
-    user: postgres
+    user: ${POSTGRES_USER}
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
