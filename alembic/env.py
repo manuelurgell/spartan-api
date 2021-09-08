@@ -1,12 +1,17 @@
+import os
+import sys
 from logging.config import fileConfig
+
+from alembic import context
+
+from dotenv import load_dotenv
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from alembic import context
+import models  # noqa: F401
 
-import os, sys
-from dotenv import load_dotenv
+from db import metadata  # noqa: I100
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
@@ -17,9 +22,6 @@ config = context.config
 config.set_main_option("sqlalchemy.url", os.environ["POSTGRES_URL"])
 
 fileConfig(config.config_file_name)
-
-import models
-from db import metadata
 
 target_metadata = metadata
 

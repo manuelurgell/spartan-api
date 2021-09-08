@@ -7,10 +7,16 @@ services:
     restart: unless-stopped
     ports:
       - ${POSTGRES_PORT}:5432
+    user: postgres
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 2s
+      timeout: 2s
+      retries: 5
 
   app:
     container_name: spartan_app
@@ -21,5 +27,6 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     restart: unless-stopped

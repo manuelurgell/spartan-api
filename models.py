@@ -1,7 +1,15 @@
-from sqlalchemy import MetaData, Table, Date, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import (
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Table
+)
 from sqlalchemy.sql import func
 
-from db import database, metadata
+from db import metadata
 
 teams = Table(
     'team',
@@ -16,7 +24,9 @@ users = Table(
     'user',
     metadata,
     Column("id", Integer, primary_key=True, index=True),
-    Column("team_id", Integer, ForeignKey("team.id", ondelete='CASCADE'), nullable=False),
+    Column("team_id", Integer, ForeignKey(
+        "team.id", ondelete='CASCADE'
+    ), nullable=False),
     Column("email", String(250), nullable=False, unique=True),
     # password
     Column("name", String(250), nullable=False),

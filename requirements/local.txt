@@ -1,0 +1,17 @@
+-r production.txt
+backports.entry-points-selectable==1.1.0
+distlib==0.3.2
+filelock==3.0.12
+flake8==3.9.2
+mccabe==0.6.1
+packaging==21.0
+platformdirs==2.3.0
+pluggy==1.0.0
+py==1.10.0
+pycodestyle==2.7.0
+pyflakes==2.3.1
+pyparsing==2.4.7
+six==1.16.0
+toml==0.10.2
+tox==3.24.3
+virtualenv==20.7.2

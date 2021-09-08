@@ -1,6 +1,6 @@
+import datetime
 from typing import Optional
 
-import datetime
 from pydantic import BaseModel
 
 
@@ -10,12 +10,15 @@ class BaseTeam(BaseModel):
     created_at: datetime.datetime
     last_modified: Optional[datetime.datetime]
 
+
 class CreateTeam(BaseModel):
     name: str
+
 
 class RetrieveTeam(BaseModel):
     id: int
     name: str
+
 
 class RetrieveUpdatedTeam(BaseModel):
     id: int
