@@ -29,7 +29,7 @@ jobs:
       POSTGRES_PASSWORD: postgres
       POSTGRES_HOST: localhost
       POSTGRES_PORT: "5432"
-      POSTGRES_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+      POSTGRES_URL: "postgresql://postgres:postgres@localhost:5432/test_db"
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
