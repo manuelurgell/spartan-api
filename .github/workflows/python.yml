@@ -47,5 +47,4 @@ jobs:
       - name: Run unit tests
         run: |
           pip install tox
-          cd backend
           tox
