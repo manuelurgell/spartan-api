@@ -13,7 +13,7 @@ jobs:
       postgres_tests:
         image: postgres
         env:
-          POSTGRES_DB: test_db
+          POSTGRES_DB: spartan_db
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -23,13 +23,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-    env:
-      POSTGRES_DB: test_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: "5432"
-      POSTGRES_URL: "postgresql://postgres:postgres@localhost:5432/test_db"
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -46,5 +39,6 @@ jobs:
           pip install -r ./requirements/production.txt
       - name: Run unit tests
         run: |
+          cat .env.default > .env
           pip install tox
           tox
