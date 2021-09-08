@@ -107,7 +107,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
 
 - Database service must be up and running.
 
-### Running locally
+#### Running locally
 - You can also run the api locally, use:
   ```
   uvicorn main:app --host 0.0.0.0 --port 8000 --reload
@@ -124,3 +124,6 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   alembic upgrade head
   ```
 - Running locally has the most flexibility while developing, but you can find errors that vary from operating system to operating system, so be careful.
+
+#### API documentation
+- When the service is running, either via docker-compose, docker, or locally, you can go to http://localhost:8000/docs or http://localhost:8000/redoc to see the full API documentation of each and every endpoint declared in the RESTful API.
