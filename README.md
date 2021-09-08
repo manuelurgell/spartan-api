@@ -80,7 +80,11 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   docker-compose build
   docker-compose up
   ```
-- Server auto-restarts on changes, so only when new packages are added, `docker-compose build` will be needed again
+- Server auto-restarts on changes, so only when new packages are added, the previous commands will be needed again. To re-run on existing docker images, simply:
+  ```
+  docker start postgres_db
+  docker start spartan_app
+  ```
 
 #### Models
 - Database changes are managed through alembic, in order to migrate new changes you must generate a new migration:
@@ -91,8 +95,32 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   ```
   docker-compose run app alembic upgrade head
   ```
-- Convention for auto-generated migrations like `my_migration` is `auto_${DATE}`, for example:
+- Convention for auto-generated migrations like `my_migration` is `auto_${DATE}`, or `auto_${DATE}_{NUMBER}` if more than one, for example:
   ```
-  docker-compose run app alembic revision --autogenerate -m "auto_20210907"
+  docker-compose run app alembic revision --autogenerate -m "auto_20210907_2"
   ```
+- You can also run this commands directly to the docker container:
+  ```
+  docker exec -it spartan_app alembic revision --autogenerate -m "my_migration"
+  docker exec -it spartan_app alembic upgrade head
+  ```
+
 - Database service must be up and running.
+
+### Running locally
+- You can also run the api locally, use:
+  ```
+  uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+  ```
+- If you have a postgresql database running in your machine, simply change the according variables in the .env file, for example:
+  ```
+  POSTGRES_DB=spartan_db
+  ...
+  POSTGRES_HOST=localhost
+  ```
+- This will also allow to create and update migrations locally, like so:
+  ```
+  alembic revision --autogenerate -m "my_migration"
+  alembic upgrade head
+  ```
+- Running locally has the most flexibility while developing, but you can find errors that vary from operating system to operating system, so be careful.

@@ -19,8 +19,9 @@ config.set_main_option("sqlalchemy.url", os.environ["POSTGRES_URL"])
 fileConfig(config.config_file_name)
 
 import models
+from db import metadata
 
-target_metadata = models.Base.metadata
+target_metadata = metadata
 
 
 def run_migrations_offline():

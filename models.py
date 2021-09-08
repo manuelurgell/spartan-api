@@ -1,30 +1,29 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy import MetaData, Table, Date, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.sql import func
 
-Base = declarative_base()
+from db import database, metadata
 
+teams = Table(
+    'team',
+    metadata,
+    Column("id", Integer, primary_key=True, index=True),
+    Column("name", String(250), nullable=False, unique=True),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+    Column("last_modified", DateTime(timezone=True), onupdate=func.now())
+)
 
-class Team(Base):
-    __tablename__ = 'team'
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(250), nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    last_modified = Column(DateTime(timezone=True), onupdate=func.now())
-
-
-class User(Base):
-    __tablename__ = 'user'
-    id = Column(Integer, primary_key=True, index=True)
-    team_id = Column(Integer, ForeignKey('team.id'), nullable=False)
-    team = relationship('Team', backref='users')
-    email = Column(String(250), nullable=False, unique=True)
+users = Table(
+    'user',
+    metadata,
+    Column("id", Integer, primary_key=True, index=True),
+    Column("team_id", Integer, ForeignKey("team.id", ondelete='CASCADE'), nullable=False),
+    Column("email", String(250), nullable=False, unique=True),
     # password
-    name = Column(String(250), nullable=False)
-    last_name = Column(String(250), nullable=False)
-    birthdate = Column(DateTime(timezone=True), nullable=False)
-    phone = Column(String(250))
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    last_modified = Column(DateTime(timezone=True), onupdate=func.now())
+    Column("name", String(250), nullable=False),
+    Column("last_name", String(250), nullable=False),
+    Column("birthdate", Date, nullable=False),
+    Column("phone", Integer),
+    Column("created_at", DateTime(timezone=True), server_default=func.now()),
+    Column("last_modified", DateTime(timezone=True), onupdate=func.now())
     # last_login
+)
