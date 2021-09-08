@@ -23,7 +23,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   POSTGRES_HOST=database
   POSTGRES_PORT=5432
 
-  POSTGRES_URL="postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+  POSTGRES_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
   ```
 
 #### Run project
@@ -57,7 +57,7 @@ Coding Challenge. You must be here because you are a [developer](#development), 
   POSTGRES_HOST=database
   POSTGRES_PORT=5432
 
-  POSTGRES_URL="postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+  POSTGRES_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
   ```
 
 #### Install Packages
